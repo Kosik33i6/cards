@@ -10,11 +10,11 @@ const Hero = (props) => {
       <img className={styles.image} src={props.image} alt="hero" />
     </header>
   );
-}
+};
 
 Hero.propTypes = {
   image: PropTypes.string,
   title: PropTypes.node,
-}
+};
 
 export default Hero;

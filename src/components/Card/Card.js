@@ -7,10 +7,10 @@ const Card = (props) => {
   return (
     <div className={styles.component}>{title}</div>
   );
-}
+};
 
 Card.propTypes = {
-  title: PropTypes.node
-}
+  title: PropTypes.node,
+};
 
 export default Card;
