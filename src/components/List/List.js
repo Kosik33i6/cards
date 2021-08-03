@@ -1,31 +1,58 @@
 import React, { Component } from 'react';
 import Hero from '../Hero/Hero';
 import PropTypes from 'prop-types';
+import ReactHtmlParser from 'react-html-parser';
 import Column from '../Column/Column';
+import Creator from '../Creator/Creator';
+import {settings} from '../../data/dataStore';
 import styles from './List.scss';
 
 class List extends Component {
   static propTypes = {
-      title: PropTypes.node,
-      children: PropTypes.node,
-      image: PropTypes.string,
+    title: PropTypes.node,
+    description: PropTypes.node,
+    columns: PropTypes.array,
+    image: PropTypes.string,
   }
 
   static defaultProps = {
-    children: <p>I can do all the things!!!</p>,
+    description: settings.defaultListDescription,
   }
 
-  state = {  }
+  state = {
+    columns: this.props.columns || [],
+  }
+
+  addColumn(title){
+    console.log(title);
+    this.setState(state => (
+      {
+        columns: [
+          ...state.columns,
+          {
+            key: state.columns.length ? state.columns[state.columns.length-1].key+1 : 0,
+            title,
+            icon: 'list-alt',
+            cards: []
+          }
+        ]
+      }
+    ));
+  }
+
   render() {
-    const {title, image, children} = this.props;
+    const {title, image, description} = this.props;
     return (
       <section className={styles.component}>
         <Hero title={title} image={image}/>
-        {children}
+        {ReactHtmlParser(description)}
         <div className={styles.columns}>
-          <Column title="Column-1"/>
-          <Column title="Column-2"/>
-          <Column title="Column-3"/>
+        {this.state.columns.map(({key, ...columnProps}) => (
+          <Column key={key} {...columnProps} />
+        ))}
+        </div>
+        <div className={styles.creator}>
+          <Creator text={settings.columnCreatorText} action={title => this.addColumn(title)}/>
         </div>
       </section>
     );
